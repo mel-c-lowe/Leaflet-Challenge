@@ -1,6 +1,6 @@
 var myMap = L.map("mapid", {
     center: [30.00, 30.00],
-    zoom: 1
+    zoom: 3
   });
   
   // Adding tile layer
@@ -15,17 +15,19 @@ var myMap = L.map("mapid", {
 
   var earthquake_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
 
-  d3.json(earthquake_url).then(function(earthquakes) {
-      console.log(earthquakes)
+  d3.json(earthquake_url).then(function(data) {
+    //   console.log(data)
 
-    // Loop through geojson to get data for markers
+    // Drill down to get coordinates
+    var earthquakes = data.features;
+    console.log(earthquakes);
+
     for (var i = 0; i < earthquakes.length; i++) {
-        var geometry = earthquakes[i].geometry;
+        var lat = earthquakes[i].geometry.coordinates[1];
+        var long = earthquakes[i].geometry.coordinates[0];
 
-        if (geometry) {
-            L.marker([geometry.coordinates[1], geometry.coordinates[0]]).addTo(myMap);
-          }
-        }
+        L.marker([lat, long]).addTo(myMap);
+    };
       
 
   });

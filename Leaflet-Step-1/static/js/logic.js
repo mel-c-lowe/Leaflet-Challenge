@@ -20,13 +20,36 @@ var myMap = L.map("mapid", {
 
     // Drill down to get coordinates
     var earthquakes = data.features;
-    console.log(earthquakes);
+    // console.log(earthquakes);
+
+    // Set color scheme for earthquake magnitude
+    var greater = "red";
+    var lesser = "green";
 
     for (var i = 0; i < earthquakes.length; i++) {
         var lat = earthquakes[i].geometry.coordinates[1];
         var long = earthquakes[i].geometry.coordinates[0];
+        var depth = earthquakes[i].geometry.coordinates[2];
+        var mag = earthquakes[i].propoerties.mag;
 
-        L.marker([lat, long]).addTo(myMap);
+        // Testing that markers are working with data as drawn above (working)
+        // L.marker([lat, long]).addTo(myMap);
+
+        // Testing rule for greater and lesser magnitude colors
+        var fillColor;
+        if (mag > 2) {
+            fillColor = greater;
+        }
+        else if (mag > 2) {
+            fillColor = lesser;
+        }
+
+        // Describe circle/marker for each earthquake
+        var quakePoint = L.circleMarker([lat, long], {
+            radius: mag ** 2,
+            fillColor: fillColor,
+        });
+
     };
       
 

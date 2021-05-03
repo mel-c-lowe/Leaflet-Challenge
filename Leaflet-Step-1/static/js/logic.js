@@ -1,6 +1,6 @@
 var myMap = L.map("mapid", {
-    center: [37.7749, -122.4194],
-    zoom: 13
+    center: [30.00, 30.00],
+    zoom: 1
   });
   
   // Adding tile layer
@@ -9,7 +9,7 @@ var myMap = L.map("mapid", {
     tileSize: 512,
     maxZoom: 18,
     zoomOffset: -1,
-    id: "mapbox/streets-v11",
+    id: "mapbox/outdoors-v11",
     accessToken: API_KEY
   }).addTo(myMap);
 

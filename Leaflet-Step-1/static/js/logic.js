@@ -15,42 +15,57 @@ var myMap = L.map("mapid", {
 
   var earthquake_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
 
-  d3.json(earthquake_url).then(function(data) {
-    //   console.log(data)
+d3.json(earthquake_url).then(function(data) {
+    console.log(data);
 
-    // Drill down to get coordinates
+    // Drill down for coordinates
     var earthquakes = data.features;
-    // console.log(earthquakes);
 
-    // Set color scheme for earthquake magnitude
-    var greater = "red";
-    var lesser = "green";
-
+    // For loop through json for datapoints needed
     for (var i = 0; i < earthquakes.length; i++) {
         var lat = earthquakes[i].geometry.coordinates[1];
         var long = earthquakes[i].geometry.coordinates[0];
-        var depth = earthquakes[i].geometry.coordinates[2];
-        var mag = earthquakes[i].propoerties.mag;
+        var mag = earthquakes[i].properties.mag;
 
-        // Testing that markers are working with data as drawn above (working)
-        // L.marker([lat, long]).addTo(myMap);
-
-        // Testing rule for greater and lesser magnitude colors
-        var fillColor;
-        if (mag > 2) {
-            fillColor = greater;
-        }
-        else if (mag > 2) {
-            fillColor = lesser;
-        }
-
-        // Describe circle/marker for each earthquake
-        var quakePoint = L.circleMarker([lat, long], {
-            radius: mag ** 2,
-            fillColor: fillColor,
+        var circle = L.circleMarker([lat, long], {
+            radius: mag ** 2
         });
-
+        circle.addTo(myMap);
     };
-      
+});
 
-  });
+
+
+
+
+
+
+
+
+
+  // Keeping for a moment because something is wrong with the basic wrapping
+//   for (var i = 0; i < earthquakes.length; i++) {
+//     var lat = earthquakes[i].geometry.coordinates[1];
+//     var long = earthquakes[i].geometry.coordinates[0];
+    // var depth = earthquakes[i].geometry.coordinates[2];
+    // var magnitude = earthquakes[i].propoerties.mag;
+
+    // console.log(magnitude);
+
+
+    // Testing that markers are working with data as drawn above (working)
+    // L.marker([lat, long]).addTo(myMap);
+
+    // // Testing rule for greater and lesser magnitude colors
+    // var fillColor;
+    // if (mag > 2) {
+    //     fillColor = greater;
+    // }
+    // else if (mag > 2) {
+    //     fillColor = lesser;
+    // }
+
+    // // Describe circle/marker for each earthquake
+    // var quakePoint = L.circleMarker([lat, long], {
+    //     radius: mag ** 2,
+    //     fillColor: fillColor,

@@ -22,7 +22,7 @@ d3.json(earthquake_url).then(function(data) {
     // Drill down for coordinates
     var earthquakes = data.features;
 
-    // Set up color scheme for magnitude
+    // Set up color scheme for depth of earthquakes
     var colors = {
         level_1: "#8B0000",
         level_2: "#FF4500",
@@ -62,7 +62,7 @@ d3.json(earthquake_url).then(function(data) {
         circle.addTo(myMap);
 
         // Add a popup on click
-        circle.bindPopup(earthquakes[i].properties.title);
+        circle.bindPopup("Location: " + earthquakes[i].properties.place + "<br> Was this earthquake felt? " + earthquakes[i].properties.felt);
 
         
     };

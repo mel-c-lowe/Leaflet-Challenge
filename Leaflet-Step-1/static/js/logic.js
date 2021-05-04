@@ -16,20 +16,24 @@ var myMap = L.map("mapid", {
   var earthquake_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
   var alt_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
 
-d3.json(earthquake_url).then(function(data) {
+// Set up color scheme for depth of earthquakes
+var colors = {
+    level_0: '#3c0',
+    level_1: '#9f6',
+    level_2: '#fc3',
+    level_3: '#f93',
+    level_4: '#c60',
+    level_5: '#c00'
+}
+
+
+
+// Read json and print data  
+d3.json(alt_url).then(function(data) {
     console.log(data);
 
     // Drill down for coordinates
     var earthquakes = data.features;
-
-    // Set up color scheme for depth of earthquakes
-    var colors = {
-        level_1: "#8B0000",
-        level_2: "#FF4500",
-        level_3: "#FFA500",
-        level_4: "#FFFF00",
-        level_5: "#9ACD32"
-    }
 
     // For loop through json for datapoints needed
     for (var i = 0; i < earthquakes.length; i++) {
@@ -41,15 +45,17 @@ d3.json(earthquake_url).then(function(data) {
         // Select color of circle based on magnitude
         var fillColor;
         if (depth > 50) {
-            fillColor = colors.level_1;
+            fillColor = colors.level_5;
         } else if (depth > 40) {
-            fillColor = colors.level_2;
+            fillColor = colors.level_4;
         } else if (depth > 30) {
             fillColor = colors.level_3;
         } else if (depth > 20) {
-            fillColor = colors.level_4;
+            fillColor = colors.level_2;
+        } else if (depth > 10) {
+            fillColor = colors.level_1;
         } else if (depth > 1) {
-            fillColor = colors.level_5;
+            fillColor = colors.level_0;
         }
 
         var circle = L.circleMarker([lat, long], {
@@ -63,7 +69,28 @@ d3.json(earthquake_url).then(function(data) {
 
         // Add a popup on click
         circle.bindPopup("Location: " + earthquakes[i].properties.place + "<br> Was this earthquake felt? " + earthquakes[i].properties.felt);
-
         
     };
 });
+
+/* Setting the legend to appear in the bottom right of our chart */
+var legend = L.control({
+position: 'bottomright'
+});
+
+/* Adding on the legend based off the color scheme we have */
+legend.onAdd = function (color) {
+    var div = L.DomUtil.create('div', 'info legend');
+    var levels = ["> 1", "> 10",  "> 20", "> 30", "> 40", "> 50"];
+    var colors = ['#3c0', '#9f6', '#fc3', '#f93', '#c60', '#c00']
+    for (var i = 0; i < levels.length; i++) {
+        div.innerHTML += '<i style="background:' + colors[i] + '"></i>' + levels[i] + '<br>';
+    }
+    return div;
+}
+legend.addTo(myMap);
+
+
+
+
+

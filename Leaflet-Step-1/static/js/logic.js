@@ -21,51 +21,42 @@ d3.json(earthquake_url).then(function(data) {
     // Drill down for coordinates
     var earthquakes = data.features;
 
+    // Set up color scheme for magnitude
+    var colors = {
+        level_1: "#8B0000",
+        level_2: "#FF4500",
+        level_3: "#FFA500",
+        level_4: "#FFFF00",
+        level_5: "#9ACD32"
+    }
+
     // For loop through json for datapoints needed
     for (var i = 0; i < earthquakes.length; i++) {
         var lat = earthquakes[i].geometry.coordinates[1];
         var long = earthquakes[i].geometry.coordinates[0];
         var mag = earthquakes[i].properties.mag;
 
+        // Select color of circle based on magnitude
+        var fillColor;
+        if (mag > 5) {
+            fillColor = colors.level_1;
+        } else if (mag > 4) {
+            fillColor = colors.level_2;
+        } else if (mag > 3) {
+            fillColor = colors.level_3;
+        } else if (mag > 2) {
+            fillColor = colors.level_4;
+        } else if (mag > 1) {
+            fillColor = colors.level_5;
+        }
+
         var circle = L.circleMarker([lat, long], {
-            radius: mag ** 2
+            radius: mag ** 2,
+            fillColor: fillColor,
+            color: "black",
+            fillOpacity: 1,
+            weight: 1
         });
         circle.addTo(myMap);
     };
 });
-
-
-
-
-
-
-
-
-
-
-  // Keeping for a moment because something is wrong with the basic wrapping
-//   for (var i = 0; i < earthquakes.length; i++) {
-//     var lat = earthquakes[i].geometry.coordinates[1];
-//     var long = earthquakes[i].geometry.coordinates[0];
-    // var depth = earthquakes[i].geometry.coordinates[2];
-    // var magnitude = earthquakes[i].propoerties.mag;
-
-    // console.log(magnitude);
-
-
-    // Testing that markers are working with data as drawn above (working)
-    // L.marker([lat, long]).addTo(myMap);
-
-    // // Testing rule for greater and lesser magnitude colors
-    // var fillColor;
-    // if (mag > 2) {
-    //     fillColor = greater;
-    // }
-    // else if (mag > 2) {
-    //     fillColor = lesser;
-    // }
-
-    // // Describe circle/marker for each earthquake
-    // var quakePoint = L.circleMarker([lat, long], {
-    //     radius: mag ** 2,
-    //     fillColor: fillColor,

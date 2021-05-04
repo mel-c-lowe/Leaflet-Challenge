@@ -26,8 +26,6 @@ var colors = {
     level_5: '#c00'
 }
 
-
-
 // Read json and print data  
 d3.json(alt_url).then(function(data) {
     console.log(data);

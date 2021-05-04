@@ -16,7 +16,7 @@ var myMap = L.map("mapid", {
   var earthquake_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
   var alt_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
 
-d3.json(alt_url).then(function(data) {
+d3.json(earthquake_url).then(function(data) {
     console.log(data);
 
     // Drill down for coordinates
@@ -60,5 +60,10 @@ d3.json(alt_url).then(function(data) {
             weight: 1
         });
         circle.addTo(myMap);
+
+        // Add a popup on click
+        circle.bindPopup(earthquakes[i].properties.title);
+
+        
     };
 });

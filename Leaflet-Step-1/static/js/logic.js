@@ -34,19 +34,20 @@ d3.json(earthquake_url).then(function(data) {
     for (var i = 0; i < earthquakes.length; i++) {
         var lat = earthquakes[i].geometry.coordinates[1];
         var long = earthquakes[i].geometry.coordinates[0];
+        var depth = earthquakes[i].geometry.coordinates[2];
         var mag = earthquakes[i].properties.mag;
 
         // Select color of circle based on magnitude
         var fillColor;
-        if (mag > 5) {
+        if (depth > 50) {
             fillColor = colors.level_1;
-        } else if (mag > 4) {
+        } else if (depth > 40) {
             fillColor = colors.level_2;
-        } else if (mag > 3) {
+        } else if (depth > 30) {
             fillColor = colors.level_3;
-        } else if (mag > 2) {
+        } else if (depth > 20) {
             fillColor = colors.level_4;
-        } else if (mag > 1) {
+        } else if (depth > 1) {
             fillColor = colors.level_5;
         }
 
